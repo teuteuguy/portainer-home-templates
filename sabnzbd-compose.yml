@@ -1,0 +1,16 @@
+version: "2.3"
+services:
+  sabnzbd:
+    image: ghcr.io/linuxserver/sabnzbd:latest
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+      - 9090:9090
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - /mnt/configs/.sabnzbd:/config
+      - /mnt/Downloads:/downloads
+      - /mnt/Downloads/sabnzbd-incomplete:/incomplete-downloads
