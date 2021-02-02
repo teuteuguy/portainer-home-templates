@@ -7,10 +7,10 @@ services:
     environment:
       - PUID=1000 #optional
       - PGID=1000 #optional
-      - TZ=Asia/Singapore
-      - SUBDOMAINS=subdomain1,subdomain2
-      - TOKEN=token
       - LOG_FILE=false #optional
-    volumes:
-      - /path/to/appdata/config:/config #optional
+      - TZ=${TZ}
+      - SUBDOMAINS=${SUBDOMAINS}
+      - TOKEN=${TOKEN}
+    # volumes:
+    #   - /path/to/appdata/config:/config #optional
     restart: unless-stopped
