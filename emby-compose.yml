@@ -9,7 +9,7 @@ services:
       - UID=${UID} # The UID to run emby as (default: 2)
       - GID=${GID} # The GID to run emby as (default 2)
     volumes:
-      - /mnt/configs/.emby:/config # Configuration directory      
+      - /mnt/configs/emby:/config # Configuration directory      
       - /mnt/media:/mnt/data # Media directory
     ports:
       - 8096:8096 # HTTP port
