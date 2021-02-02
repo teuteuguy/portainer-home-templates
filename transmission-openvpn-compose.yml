@@ -4,8 +4,9 @@ services:
         cap_add:
             - NET_ADMIN
         volumes:
-            - '${VOLUME_DATA}:/data'
-            - '${VOLUME_DOWNLOAD}:/mnt/downloads'
+            - '/mnt/Downloads/torrents:/config'
+            - '/mnt/Downloads/torrents:/data'
+            - '/mnt/Downloads:/mnt/downloads'
         environment:
             - OPENVPN_PROVIDER=${OPENVPN_PROVIDER}
             - OPENVPN_USERNAME=${OPENVPN_USERNAME}
