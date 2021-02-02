@@ -1,0 +1,38 @@
+version: '3.3'
+services:
+    transmission-openvpn:
+        cap_add:
+            - NET_ADMIN
+        volumes:
+            - '${VOLUME_DATA}:/data'
+            - '${VOLUME_DOWNLOAD}:/mnt/downloads'
+        environment:
+            - OPENVPN_PROVIDER=${OPENVPN_PROVIDER}
+            - OPENVPN_USERNAME=${OPENVPN_USERNAME}
+            - OPENVPN_PASSWORD=${OPENVPN_PASSWORD}
+            - LOCAL_NETWORK=192.168.0.0/16
+            - NORDVPN_COUNTRY=${NORDVPN_COUNTRY}
+            - NORDVPN_CATEGORY=legacy_p2p
+            - NORDVPN_PROTOCOL=tcp
+            - TRANSMISSION_RPC_AUTHENTICATION_REQUIRED=${TRANSMISSION_RPC_AUTHENTICATION_REQUIRED}
+            - TRANSMISSION_RPC_ENABLED=true
+            - TRANSMISSION_RPC_PASSWORD=${TRANSMISSION_RPC_PASSWORD}
+            - TRANSMISSION_RPC_USERNAME=${TRANSMISSION_RPC_USERNAME}
+            - TRANSMISSION_RPC_WHITELIST=127.0.0.1,192.168.*.*
+            - TRANSMISSION_RPC_WHITELIST_ENABLED=false
+            - TRANSMISSION_RPC_BIND_ADDRESS=0.0.0.0
+            - TRANSMISSION_RPC_HOST_WHITELIST_ENABLED=true
+            - TRANSMISSION_RPC_PORT=9091 \
+            - TRANSMISSION_DOWNLOAD_DIR=/mnt/downloads \
+            - TRANSMISSION_INCOMPLETE_DIR=/data/incomplete \
+            - TRANSMISSION_INCOMPLETE_DIR_ENABLED=true \
+            - TRANSMISSION_DOWNLOAD_QUEUE_SIZE=25 \
+            - PUID=${PUID} \
+            - PGID=${PGID} \
+        logging:
+            driver: json-file
+            options:
+                max-size: 10m
+        ports:
+            - '9091:9091'
+        image: haugene/transmission-openvpn:latest
