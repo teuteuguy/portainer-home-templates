@@ -1,0 +1,98 @@
+---
+version: "2"
+services:
+  emby:
+    image: emby/embyserver:latest
+    container_name: embyserver
+    # runtime: nvidia # Expose NVIDIA GPUs
+    network_mode: host # Enable DLNA and Wake-on-Lan
+    environment:
+      - UID=1000 # ${UID} # The UID to run emby as (default: 2)
+      - GID=1000 # ${GID} # The GID to run emby as (default 2)
+    volumes:
+      - /mnt/configs/emby:/config # Configuration directory      
+      - /mnt/media:/mnt/data      # Media directory
+    ports:
+      - 8096:8096 # HTTP port
+      - 8920:8920 # HTTPS port
+    # devices:
+    #   - /dev/dri:/dev/dri # VAAPI/NVDEC/NVENC render nodes
+    #   - /dev/vchiq:/dev/vchiq # MMAL/OMX on Raspberry Pi
+    restart: unless-stopped
+  
+  embystat:
+    image: ghcr.io/linuxserver/embystat:latest
+    container_name: embystat
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Singapore
+    volumes:
+      - /mnt/configs/embystat:/config # Configuration directory
+    ports:
+      - 6555:6555
+    restart: unless-stopped
+    
+  organizr:
+    container_name: organizr
+    hostname: organizr
+    image: organizr/organizr:latest
+    restart: unless-stopped
+    ports:
+        - 90:80
+    volumes:
+        - /mnt/configs/organizr:/config # Configuration directory
+    environment:
+        - fpm=true #true or false | using true will provide better performance
+        - branch=v2-master #v2-master or #v2-develop
+        - PUID=1000
+        - PGID=1000
+        - TZ=Asia/Singapore
+        
+  radarr:
+    image: linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Singapore
+      - UMASK_SET=022 #optional
+    volumes:
+      - /mnt/configs/radarr:/config # Configuration directory
+      - /mnt/media/video/movies:/movies
+      - /mnt/Downloads:/downloads
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+    
+  sonarr:
+    image: linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Singapore
+      - UMASK_SET=022
+    volumes:
+      - /mnt/configs/sonarr:/config # Configuration directory
+      - /mnt/media/video/tv:/tv
+      - /mnt/Downloads:/downloads
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+    
+  sabnzbd:
+    image: ghcr.io/linuxserver/sabnzbd:latest
+    container_name: sabnzbd
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+      - 9090:9090
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Singapore
+    volumes:
+      - /mnt/configs/sabnzbd:/config
+      - /mnt/Downloads:/downloads
+      - /mnt/Downloads/sabnzbd-incomplete:/incomplete-downloads
