@@ -22,10 +22,10 @@ services:
       - 8920:8920 # HTTPS port
     restart: unless-stopped
 
-volumes:
-  lacie-media:
-    driver: local
-    opt:
-      - type=cifs
-      - device=${SMB_MEDIA_PATH_TO_SHARE}
-      - uid=${UID},gid=${GID},credentials=${SMB_CREDS_FILE}
+# volumes:
+#   lacie-media:
+#     driver: local
+#     driver_opts:
+#       type: "cifs"
+#       device: "${SMB_MEDIA_PATH_TO_SHARE}"
+#       o: uid=${UID},gid=${GID},credentials=${SMB_CREDS_FILE}
