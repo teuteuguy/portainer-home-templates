@@ -24,4 +24,7 @@ services:
       - portainer_agent_data:/data
     restart: always
 
+volumes:
+  portainer_agent_data:
+
 
