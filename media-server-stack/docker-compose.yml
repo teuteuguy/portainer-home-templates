@@ -2,6 +2,22 @@
 version: '2.4'
 services:
 
+  organizr:
+    container_name: organizr
+    hostname: organizr
+    image: organizr/organizr:latest
+    restart: unless-stopped
+    ports:
+        - 80:80
+    volumes:
+        - /mnt/configs/organizr:/config # Configuration directory
+    environment:
+        - fpm=true #true or false | using true will provide better performance
+        - branch=v2-master #v2-master or #v2-develop
+        - PUID=${UID}
+        - PGID=${GID}
+        - TZ=${TZ}
+
   emby:
     image: emby/embyserver:latest
     container_name: embyserver
@@ -20,6 +36,19 @@ services:
     ports:
       - 8096:8096 # HTTP port
       - 8920:8920 # HTTPS port
+    restart: unless-stopped
+
+  embystat:
+    image: ghcr.io/linuxserver/embystat:latest
+    container_name: embystat
+    environment:
+      - PUID=${UID}
+      - PGID=${GID}
+      - TZ=${TZ}
+    volumes:
+      - /mnt/configs/embystat:/config # Configuration directory
+    ports:
+      - 6555:6555
     restart: unless-stopped
 
 # volumes:
