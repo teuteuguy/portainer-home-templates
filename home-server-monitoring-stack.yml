@@ -1,0 +1,27 @@
+---
+version: '2.3'
+services:
+
+  watchtower:
+    container_name: watchtower
+    image: containrrr/watchtower:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+
+  portainer_agent:
+    container_name: portainer_edge_agent
+    image: portainer/agent
+    environment:
+      - CAP_HOST_MANAGEMENT=1
+      - EDGE=1
+      - EDGE_ID=${EDGE_ID}
+      - EDGE_KEY=${EDGE_KEY}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+      - /:/host
+      - portainer_agent_data:/data
+    restart: always
+
+
