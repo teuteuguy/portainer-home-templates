@@ -2,18 +2,16 @@
 version: '2.4'
 services:
 
-  organizr:
-    container_name: organizr
-    hostname: organizr
-    image: organizr/organizr:latest
+  heimdall:
+    container_name: heimdall
+    image: ghcr.io/linuxserver/heimdall:latest
     restart: unless-stopped
     ports:
-        - 80:80
+      - 80:80
+      - 443:443
     volumes:
-        - /mnt/configs/organizr:/config # Configuration directory
+        - /mnt/configs/heimdall:/config # Configuration directory
     environment:
-        - fpm=true #true or false | using true will provide better performance
-        - branch=v2-master #v2-master or #v2-develop
         - PUID=${UID}
         - PGID=${GID}
         - TZ=${TZ}
@@ -67,22 +65,22 @@ services:
       - 8686:8686
     restart: unless-stopped
   
-  radarr:
-    image: ghcr.io/linuxserver/radarr:latest
-    container_name: radarr
-    environment:
-      - PUID=${UID}
-      - PGID=${GID}
-      - TZ=${TZ}
-      - UMASK_SET=022 #optional
-    volumes:
-      - /mnt/configs/radarr:/config # Configuration directory
-      # - /mnt/media/video/movies:/movies
-      - lacie-media:/mnt/media
-      - /mnt/Downloads:/downloads
-    ports:
-      - 7878:7878
-    restart: unless-stopped
+  # radarr:
+  #   image: ghcr.io/linuxserver/radarr:latest
+  #   container_name: radarr
+  #   environment:
+  #     - PUID=${UID}
+  #     - PGID=${GID}
+  #     - TZ=${TZ}
+  #     - UMASK_SET=022 #optional
+  #   volumes:
+  #     - /mnt/configs/radarr:/config # Configuration directory
+  #     # - /mnt/media/video/movies:/movies
+  #     - lacie-media:/mnt/media
+  #     - /mnt/Downloads:/downloads
+  #   ports:
+  #     - 7878:7878
+  #   restart: unless-stopped
     
   sonarr:
     image: linuxserver/sonarr:latest
