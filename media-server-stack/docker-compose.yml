@@ -1,5 +1,5 @@
 ---
-version: '2.3'
+version: '2.4'
 services:
 
   emby:
@@ -15,7 +15,7 @@ services:
       - GID=${GID} # The GID to run emby as (default 2)
     volumes:
       # - /mnt/configs/emby:/config # Configuration directory
-      - /tmp/emby:/config
+      - lacie-configs/emby:/config
       - lacie-media:/mnt/data # Media directory
     ports:
       - 8096:8096 # HTTP port
